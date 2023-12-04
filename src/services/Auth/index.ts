@@ -1,3 +1,6 @@
-export const host = process.env.API_HOST || 'http://localhost:3000';
+import { host } from '../../constants';
 
+export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;
+
+export const createTodoRoute = `${host}/api/todos`;

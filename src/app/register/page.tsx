@@ -3,16 +3,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
-import { toast, ToastOptions } from 'react-toastify';
 import { registerRoute } from '../../services/Auth';
-
-const toastOptions: ToastOptions = {
-  position: 'bottom-right',
-  autoClose: 8000,
-  pauseOnHover: true,
-  draggable: true,
-  theme: 'dark'
-};
+import { ToastError } from '../components/ToastError';
 
 export default function Register() {
   const [values, setValues] = useState({
@@ -25,25 +17,16 @@ export default function Register() {
   const handleValidation = () => {
     const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
-      toast.error(
-        'A senha e a senha de confirmação devem ser iguais.',
-        toastOptions
-      );
+      ToastError('A senha e a senha de confirmação devem ser iguais.');
       return false;
     } else if (username.length < 3) {
-      toast.error(
-        'O nome de usuário deve ter mais de 3 caracteres.',
-        toastOptions
-      );
+      ToastError('O nome de usuário deve ter mais de 3 caracteres.');
       return false;
     } else if (password.length < 8) {
-      toast.error(
-        'A senha deve ser igual ou superior a 8 caracteres.',
-        toastOptions
-      );
+      ToastError('A senha deve ser igual ou superior a 8 caracteres.');
       return false;
-    } else if (email === '') {
-      toast.error('O e-mail é obrigatório.', toastOptions);
+    } else if (!email) {
+      ToastError('O e-mail é obrigatório.');
       return false;
     }
 
@@ -63,7 +46,7 @@ export default function Register() {
 
         if (response.status === 400) {
           const errorMessage = await response.json();
-          toast.error(errorMessage?.message, toastOptions);
+          ToastError(errorMessage?.message);
           return;
         }
 
