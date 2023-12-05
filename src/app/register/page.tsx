@@ -1,98 +1,115 @@
 'use client';
 
+import { useFormik } from 'formik';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { useState } from 'react';
+import { Form, Text } from 'react-aria-components';
+import { ToastError } from '../../components/ToastError';
 import { registerRoute } from '../../services/Auth';
-import { ToastError } from '../components/ToastError';
+import { Button, Input } from '../../shared-components';
+import schema from './Validation/schema';
 
 export default function Register() {
-  const [values, setValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    validationSchema: schema,
+    onSubmit: handleSubmit
   });
 
-  const handleValidation = () => {
-    const { password, confirmPassword, username, email } = values;
-    if (password !== confirmPassword) {
-      ToastError('A senha e a senha de confirmação devem ser iguais.');
-      return false;
-    } else if (username.length < 3) {
-      ToastError('O nome de usuário deve ter mais de 3 caracteres.');
-      return false;
-    } else if (password.length < 8) {
-      ToastError('A senha deve ser igual ou superior a 8 caracteres.');
-      return false;
-    } else if (!email) {
-      ToastError('O e-mail é obrigatório.');
-      return false;
-    }
+  async function handleSubmit() {
+    const { email, username, password } = formik.values;
+    try {
+      const response = await fetch(registerRoute, {
+        method: 'POST',
+        body: JSON.stringify({ username, email, password })
+      });
 
-    return true;
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (handleValidation()) {
-      const { email, username, password } = values;
-
-      try {
-        const response = await fetch(registerRoute, {
-          method: 'POST',
-          body: JSON.stringify({ username, email, password })
-        });
-
-        if (response.status === 400) {
-          const errorMessage = await response.json();
-          ToastError(errorMessage?.message);
-          return;
-        }
-
-        redirect('/');
-      } catch (error) {
-        console.log('Error: ' + error);
+      if (response.status === 400) {
+        const errorMessage = await response.json();
+        ToastError(errorMessage?.message);
+        return;
       }
-    }
-  };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
+      redirect('/');
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
 
   return (
-    <main>
-      <form action="" onSubmit={(event) => handleSubmit(event)}>
-        <input
+    <main className="flex items-center justify-center h-screen w-full">
+      <Form
+        action=""
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col gap-8 w-1/4"
+      >
+        <Input
+          label="Username"
           type="text"
-          placeholder="Usuario"
           name="username"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.username && formik.errors.username
+              ? formik.errors.username
+              : undefined
+          }
+          required
         />
-        <input
+        <Input
+          label="Email"
           type="email"
-          placeholder="E-mail"
+          placeholder="example@example.com"
           name="email"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.email && formik.errors.email
+              ? formik.errors.email
+              : undefined
+          }
+          required
         />
-        <input
+        <Input
+          label="Password"
           type="password"
-          placeholder="Senha"
+          placeholder="*******"
           name="password"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.password && formik.errors.password
+              ? formik.errors.password
+              : undefined
+          }
+          required
         />
-        <input
+        <Input
+          label="Confirm Password"
           type="password"
-          placeholder="Confirme a Senha"
+          placeholder="*******"
           name="confirmPassword"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.confirmPassword && formik.errors.confirmPassword
+              ? formik.errors.confirmPassword
+              : undefined
+          }
+          required
         />
-        <button type="submit">Criar conta</button>
-        <span>
-          Ja tem uma conta? <Link href="/login">Acesse.</Link>
-        </span>
-      </form>
+        <div>
+          <Button type="submit">CREATE</Button>
+          <Text elementType="p">
+            Have an account? <Link href="/login">Login.</Link>
+          </Text>
+        </div>
+      </Form>
     </main>
   );
 }

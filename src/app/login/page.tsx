@@ -1,83 +1,101 @@
 'use client';
 
+import { useFormik } from 'formik';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Form, Text } from 'react-aria-components';
+import { ToastError } from '../../components/ToastError';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { loginRoute } from '../../services/Auth';
-import { ToastError } from '../components/ToastError';
+import { Button, Input } from '../../shared-components';
+import schema from './Validation/schema';
 
 export default function Login() {
   const router = useRouter();
 
   const { setUser } = useAuthContext();
 
-  const [values, setValues] = useState({
-    email: '',
-    password: ''
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    validationSchema: schema,
+    onSubmit: handleSubmit
   });
 
-  const validateForm = () => {
-    const { email, password } = values;
-    if (!email || !password) {
-      ToastError('E-mail e senha são obrigatórios.');
-      return false;
-    }
+  async function handleSubmit() {
+    const { email, password } = formik.values;
 
-    return true;
-  };
+    try {
+      const response = await fetch(loginRoute, {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (validateForm()) {
-      const { email, password } = values;
-
-      try {
-        const response = await fetch(loginRoute, {
-          method: 'POST',
-          body: JSON.stringify({ email, password })
-        });
-
-        if (response.status === 400) {
-          const errorMessage = await response.json();
-          ToastError(errorMessage?.message);
-          return;
-        }
-
-        if (response.status === 200) {
-          const userResponse = await response.json();
-
-          setUser(userResponse?.user);
-          localStorage.setItem('user', userResponse?.user);
-          router.replace('/dashboard');
-        }
-      } catch (error) {
-        console.log('Error: ' + error);
+      if (response.status === 400) {
+        const errorMessage = await response.json();
+        ToastError(errorMessage?.message);
+        return;
       }
-    }
-  };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
+      if (response.status === 200) {
+        const userResponse = await response.json();
+
+        setUser(userResponse?.user);
+        localStorage.setItem('user', userResponse?.user);
+        router.replace('/dashboard');
+      }
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
 
   return (
-    <div>
-      <form action="" onSubmit={handleSubmit}>
-        <input
+    <Form
+      action=""
+      onSubmit={formik.handleSubmit}
+      className="flex items-center justify-center h-screen w-full"
+    >
+      <div className="text-left flex gap-6 flex-col">
+        <Text elementType="h1">Login</Text>
+
+        <Input
+          label="Email"
           type="email"
-          placeholder="E-mail"
           name="email"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          placeholder="example@example.com"
+          required
+          error={
+            formik.touched.email && formik.errors.email
+              ? formik.errors.email
+              : undefined
+          }
         />
-        <input
+        <Input
           type="password"
-          placeholder="Senha"
+          placeholder="*********"
           name="password"
-          onChange={(e) => handleChange(e)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          label="Password"
+          required
+          error={
+            formik.touched.password && formik.errors.password
+              ? formik.errors.password
+              : undefined
+          }
         />
 
-        <button type="submit">ENTRAR</button>
-      </form>
-    </div>
+        <div className="mt-2 w-full">
+          <Button type="submit">ENTRAR</Button>
+          <Text elementType="span">
+            Don&apos;t have an account? <Link href="/register">Register.</Link>
+          </Text>
+        </div>
+      </div>
+    </Form>
   );
 }
