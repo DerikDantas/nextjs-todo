@@ -52,7 +52,7 @@ export default function List({ data }: IListProps) {
         <div
           key={item._id}
           className={classNames(
-            'p-4 border-slate-300 my-3 flex justify-between gap-5 items-center rounded border-2',
+            'p-4 my-3 flex justify-between gap-5 items-center rounded border-2',
             item.completed ? 'border-green-500' : 'border-red-500'
           )}
         >

@@ -4,7 +4,6 @@ import connect from '../../../../utils/db';
 
 export async function GET(request, { params }) {
   const { id } = params;
-  console.log('id: ', id);
 
   try {
     await connect();
