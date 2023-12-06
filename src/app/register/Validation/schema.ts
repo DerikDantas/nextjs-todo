@@ -6,7 +6,7 @@ const schema = Yup.object({
   password: Yup.string().required('Password is a required field'),
   confirmPassword: Yup.string()
     .required('Confirm password is a required field')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .oneOf([Yup.ref('password')], 'Passwords must match')
 });
 
 export default schema;

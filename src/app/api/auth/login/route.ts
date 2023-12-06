@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import User from '../../../../models/User';
 import connect from '../../../../utils/db';
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
     await connect();
@@ -21,7 +21,8 @@ export async function POST(request) {
     }
 
     return NextResponse.json({ user }, { status: 200 });
-  } catch (err) {
+    // eslint-disable-next-line
+  } catch (err: any) {
     return new NextResponse(err, {
       status: 500
     });

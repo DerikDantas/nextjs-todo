@@ -11,35 +11,38 @@ export async function GET(request: NextRequest) {
       userId
     });
     return NextResponse.json({ todos });
-  } catch (err) {
+    // eslint-disable-next-line
+  } catch (err: any) {
     return new NextResponse(err, {
       status: 500
     });
   }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const { title, description, userId, completed } = await request.json();
 
     await connect();
     const todo = await Todo.create({ title, description, userId, completed });
     return NextResponse.json({ todo }, { status: 201 });
-  } catch (err) {
+    // eslint-disable-next-line
+  } catch (err: any) {
     return new NextResponse(err, {
       status: 500
     });
   }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get('id');
 
   try {
     await connect();
     await Todo.findByIdAndDelete(id);
     return NextResponse.json({ message: 'Todo deleted' }, { status: 200 });
-  } catch (err) {
+    // eslint-disable-next-line
+  } catch (err: any) {
     return new NextResponse(err, {
       status: 500
     });
