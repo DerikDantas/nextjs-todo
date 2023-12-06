@@ -1,7 +1,7 @@
 'use client';
 
+import { IUser } from '@/interfaces/User';
 import React, { createContext, useState } from 'react';
-import { IUser } from '../interfaces/User';
 
 interface IAuthContext {
   user: IUser | undefined;
@@ -15,7 +15,7 @@ interface IAuthProviderProps {
 }
 
 const AuthProvider = ({ children }: IAuthProviderProps) => {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState<IUser | undefined>(undefined);
 
   return (
     <AuthContext.Provider

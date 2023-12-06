@@ -1,4 +1,4 @@
-import { ITodos } from '../../interfaces/Todos';
+import { ITodos } from '@/interfaces/Todos';
 
 export interface ITodosStore {
   todos: ITodos[];

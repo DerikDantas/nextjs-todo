@@ -1,12 +1,11 @@
 'use client';
 
+import { AuthService } from '@/services/Auth';
+import { Button, Input, ToastError } from '@/shared-components/';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Form, Text } from 'react-aria-components';
-import { ToastError } from '../../components/ToastError';
-import { registerRoute } from '../../services/Auth';
-import { Button, Input } from '../../shared-components';
 import schema from './Validation/schema';
 
 export default function Register() {
@@ -24,9 +23,10 @@ export default function Register() {
   async function handleSubmit() {
     const { email, username, password } = formik.values;
     try {
-      const response = await fetch(registerRoute, {
-        method: 'POST',
-        body: JSON.stringify({ username, email, password })
+      const response = await AuthService.register({
+        username,
+        email,
+        password
       });
 
       if (response.status === 400) {

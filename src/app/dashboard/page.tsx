@@ -1,9 +1,9 @@
 'use client';
 
+import AddTodo from '@/components/AddTodo';
+import TodoList from '@/components/TodoList';
+import { useAuthContext } from '@/hooks/useAuthContext';
 import { redirect } from 'next/navigation';
-import AddTodo from '../../components/AddTodo';
-import TodoList from '../../components/TodoList';
-import { useAuthContext } from '../../hooks/useAuthContext';
 
 export default function Dashboard() {
   const { user } = useAuthContext();
@@ -11,10 +11,10 @@ export default function Dashboard() {
   if (!user) redirect('/login');
 
   return (
-    <div className="w-full">
+    <main className="w-full">
       <AddTodo />
 
       <TodoList />
-    </div>
+    </main>
   );
 }

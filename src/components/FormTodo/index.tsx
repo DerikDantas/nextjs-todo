@@ -1,16 +1,16 @@
 'use client';
 
+import { useAuthContext } from '@/hooks/useAuthContext';
+import { ITodos } from '@/interfaces/Todos';
+import { TodosService } from '@/services/';
+import { Button, Input, TextArea } from '@/shared-components/';
+import { useTodosStore } from '@/stores/todos';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { Form, Switch } from 'react-aria-components';
 import { FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import { ITodos } from '../../interfaces/Todos';
-import { todosRoute } from '../../services/Todos';
-import { Button, Input, TextArea } from '../../shared-components';
-import { useTodosStore } from '../../stores/todos';
-import { ToastError } from '../ToastError';
+import { ToastError } from '../../shared-components/ToastError';
 import schema from './Validation/schema';
 
 interface IFormTodoProps {
@@ -41,57 +41,50 @@ export default function FormTodo({ todo }: IFormTodoProps) {
     const { title, description, completed } = formik.values;
 
     if (todo) {
-      try {
-        const res = await fetch(todosRoute + `/${todo._id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({ title, description, completed })
-        });
+      await TodosService.update(todo._id, {
+        title,
+        description,
+        completed
+      })
+        .then((res) => {
+          if (res.ok) {
+            setTodos([
+              ...todos.filter((item) => item._id !== todo._id),
+              {
+                ...todo,
+                title,
+                description,
+                completed
+              }
+            ]);
 
-        if (res.ok) {
-          setTodos([
-            ...todos.filter((item) => item._id !== todo._id),
-            {
-              ...todo,
-              title,
-              description,
-              completed
-            }
-          ]);
-
-          toast.success('Successfully updated!');
-          route.push('/dashboard');
-        } else {
-          ToastError('Failed to updated a todo.');
-        }
-      } catch (error) {
-        console.log('Error: ' + error);
-      }
+            toast.success('Successfully updated!');
+            route.push('/dashboard');
+          } else {
+            ToastError('Failed to updated a todo.');
+          }
+        })
+        .catch((error) => console.log('Error: ' + error));
     } else {
       const userId = user._id;
 
-      try {
-        const res = await fetch(todosRoute, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({ title, description, userId, completed: false })
-        });
-
-        if (res.ok) {
-          const { todo } = await res.json();
-          addTodo(todo);
-          toast.success('Successfully updated!');
-          formik.resetForm();
-        } else {
-          ToastError('Failed to create a todo.');
-        }
-      } catch (error) {
-        console.log('Error: ' + error);
-      }
+      await TodosService.add({
+        title,
+        description,
+        userId,
+        completed: false
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            const { todo } = await res.json();
+            addTodo(todo);
+            toast.success('Successfully updated!');
+            formik.resetForm();
+          } else {
+            ToastError('Failed to create a todo.');
+          }
+        })
+        .catch((error) => console.log('Error: ' + error));
     }
   }
 

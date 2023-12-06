@@ -1,5 +1,5 @@
+import { Button, Modal } from '@/shared-components';
 import { useState } from 'react';
-import { Button, Modal } from '../../../../shared-components';
 import FormTodo from '../../../FormTodo';
 
 export default function AddModal() {

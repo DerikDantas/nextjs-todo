@@ -1,14 +1,13 @@
 'use client';
 
+import { ITodos } from '@/interfaces/Todos';
+import { useTodosStore } from '@/stores/todos';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Text } from 'react-aria-components';
-import { IoMdTrash } from 'react-icons/io';
 import { MdOutlineEdit } from 'react-icons/md';
-import { ITodos } from '../../../../interfaces/Todos';
-import { todosRoute } from '../../../../services/Todos';
-import { useTodosStore } from '../../../../stores/todos';
+import DeleteTodo from '../../../DeleteTodo';
 
 interface IListProps {
   data: ITodos[];
@@ -23,20 +22,6 @@ export default function List({ data }: IListProps) {
   useEffect(() => {
     if (data) setTodos(data);
   }, [data, setTodos]);
-
-  const handleDelete = async (id: string) => {
-    const confirmed = confirm('Are you sure?');
-
-    if (confirmed) {
-      const res = await fetch(todosRoute + `?id=${id}`, {
-        method: 'DELETE'
-      });
-
-      if (res.ok) {
-        setTodos(todos.filter((item) => item._id !== id));
-      }
-    }
-  };
 
   if (todos.length === 0) {
     return (
@@ -65,12 +50,7 @@ export default function List({ data }: IListProps) {
             <button onClick={() => router.push(`/editTodo/${item._id}`)}>
               <MdOutlineEdit size={24} />
             </button>
-            <button
-              className="text-red-500"
-              onClick={() => handleDelete(item._id)}
-            >
-              <IoMdTrash size={24} />
-            </button>
+            <DeleteTodo id={item._id} />
           </div>
         </div>
       ))}
