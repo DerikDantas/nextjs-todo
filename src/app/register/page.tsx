@@ -46,7 +46,7 @@ export default function Register() {
       <Form
         action=""
         onSubmit={formik.handleSubmit}
-        className="flex flex-col gap-8 w-1/4"
+        className="flex flex-col gap-8 w-1/2"
       >
         <Input
           label="Username"
