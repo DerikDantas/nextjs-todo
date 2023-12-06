@@ -1,6 +1,7 @@
 'use client';
 
 import classNames from 'classnames';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Text } from 'react-aria-components';
 import { IoMdTrash } from 'react-icons/io';
@@ -16,6 +17,8 @@ interface IListProps {
 export default function List({ data }: IListProps) {
   const todos = useTodosStore((state) => state.todos);
   const setTodos = useTodosStore((state) => state.setTodos);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (data) setTodos(data);
@@ -50,7 +53,7 @@ export default function List({ data }: IListProps) {
           key={item._id}
           className={classNames(
             'p-4 border-slate-300 my-3 flex justify-between gap-5 items-center rounded border-2',
-            item.completed ? 'border-green-400' : 'border-red-400'
+            item.completed ? 'border-green-500' : 'border-red-500'
           )}
         >
           <div className="flex flex-col">
@@ -59,7 +62,7 @@ export default function List({ data }: IListProps) {
           </div>
 
           <div className="flex gap-2">
-            <button>
+            <button onClick={() => router.push(`/editTodo/${item._id}`)}>
               <MdOutlineEdit size={24} />
             </button>
             <button
