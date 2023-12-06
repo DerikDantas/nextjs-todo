@@ -1,6 +1,6 @@
 # NextJS 14 Project - Todo CRUD
 
-[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/master/README.pt-br.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/DerikDantas/nextjs-todo/blob/master/README.pt-br.md)
 
 <hr />
 
