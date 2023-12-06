@@ -1,12 +1,12 @@
 # Projeto NextJS 14 - CRUD de Todo's
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/master/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/DerikDantas/nextjs-todo/blob/master/README.md)
 
 <hr />
 
 Este repositório contém um projeto desenvolvido com Next.js 14, com o objetivo de estudar e explorar as capacidades deste poderoso framework React. O projeto consiste em um CRUD (Create, Read, Update, Delete) de tarefas (Todo's) e utiliza uma variedade de bibliotecas e ferramentas modernas.
 
-## Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
 - **Next.js 14:** O framework React que oferece uma experiência de desenvolvimento eficiente e escalável para aplicações web modernas.
 
@@ -22,7 +22,7 @@ Este repositório contém um projeto desenvolvido com Next.js 14, com o objetivo
 
 - **Formik e Yup:** Bibliotecas para gerenciamento de formulários em React, simplificando a validação e manipulação de dados de formulários.
 
-## Estrutura do Projeto
+## 📂 Estrutura do Projeto
 
 O projeto está estruturado de maneira intuitiva, com os principais diretórios sendo:
 
@@ -34,7 +34,7 @@ O projeto está estruturado de maneira intuitiva, com os principais diretórios 
 
 - **`/src/utils`:** Funções utilitárias e helpers.
 
-## Como Iniciar o Projeto
+## 🔧 Como Iniciar o Projeto
 
 1. **Instalação de Dependências:** Execute `npm install` para instalar as dependências do projeto.
 
@@ -44,10 +44,6 @@ O projeto está estruturado de maneira intuitiva, com os principais diretórios 
 
 Acesse [http://localhost:3000](http://localhost:3000) para visualizar o projeto em seu navegador.
 
-## Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues, propor melhorias ou enviar pull requests para este repositório.
-
-## Licença
+## 📝 Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
