@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthService } from '@/services/Auth';
-import { Button, Input, ToastError } from '@/shared-components/';
+import { Button, Input, Toast } from '@/shared-components/';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -31,7 +31,7 @@ export default function Register() {
 
       if (response.status === 400) {
         const errorMessage = await response.json();
-        ToastError(errorMessage?.message);
+        Toast.error(errorMessage?.message);
         return;
       }
 

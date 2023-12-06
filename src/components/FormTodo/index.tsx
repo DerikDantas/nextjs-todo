@@ -3,14 +3,13 @@
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { ITodos } from '@/interfaces/Todos';
 import { TodosService } from '@/services/';
+import { Toast } from '@/shared-components';
 import { Button, Input, TextArea } from '@/shared-components/';
 import { useTodosStore } from '@/stores/todos';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { Form, Switch } from 'react-aria-components';
 import { FaArrowLeft } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import { ToastError } from '../../shared-components/ToastError';
 import schema from './Validation/schema';
 
 interface IFormTodoProps {
@@ -58,15 +57,15 @@ export default function FormTodo({ todo }: IFormTodoProps) {
               }
             ]);
 
-            toast.success('Successfully updated!');
+            Toast.success('Successfully updated!');
             route.push('/dashboard');
           } else {
-            ToastError('Failed to updated a todo.');
+            Toast.error('Failed to updated a todo.');
           }
         })
         .catch((error) => console.log('Error: ' + error));
     } else {
-      const userId = user._id;
+      const userId = user?._id;
 
       await TodosService.add({
         title,
@@ -78,10 +77,10 @@ export default function FormTodo({ todo }: IFormTodoProps) {
           if (res.ok) {
             const { todo } = await res.json();
             addTodo(todo);
-            toast.success('Successfully updated!');
+            Toast.success('Successfully updated!');
             formik.resetForm();
           } else {
-            ToastError('Failed to create a todo.');
+            Toast.error('Failed to create a todo.');
           }
         })
         .catch((error) => console.log('Error: ' + error));
