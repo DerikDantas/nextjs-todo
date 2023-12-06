@@ -47,7 +47,9 @@ export default function List({ data }: IListProps) {
           </div>
 
           <div className="flex gap-2">
-            <button onClick={() => router.push(`/editTodo/${item._id}`)}>
+            <button
+              onClick={() => router.push(`/dashboard/editTodo/${item._id}`)}
+            >
               <MdOutlineEdit size={24} />
             </button>
             <DeleteTodo id={item._id} />
