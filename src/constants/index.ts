@@ -1,1 +1,1 @@
-export const host = process.env.NEXT_API_URL || 'http://localhost:3000/';
+export const host = process.env.NEXT_PUBLIC_APP_URL;
