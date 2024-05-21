@@ -1,4 +1,4 @@
-import FormTodo from '@/components/FormTodo';
+import FormTodo from '@/components/form-todo';
 import { TodosService } from '@/services/';
 
 interface IEditTodoProps {

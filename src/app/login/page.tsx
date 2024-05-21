@@ -1,13 +1,13 @@
 'use client';
 
-import { useAuthContext } from '@/hooks/useAuthContext';
+import { useAuthContext } from '@/hooks/use-auth-context';
 import { AuthService } from '@/services/Auth';
 import { Button, Input, Toast } from '@/shared-components/';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Form, Text } from 'react-aria-components';
-import schema from './Validation/schema';
+import validationSchema from './validation-schema';
 
 export default function Login() {
   const router = useRouter();
@@ -19,11 +19,11 @@ export default function Login() {
       email: '',
       password: ''
     },
-    validationSchema: schema,
-    onSubmit: handleSubmit
+    validationSchema,
+    onSubmit
   });
 
-  async function handleSubmit() {
+  async function onSubmit() {
     const { email, password } = formik.values;
 
     await AuthService.login({ email, password })

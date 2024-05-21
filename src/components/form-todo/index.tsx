@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuthContext } from '@/hooks/useAuthContext';
+import { useAuthContext } from '@/hooks/use-auth-context';
 import { ITodos } from '@/interfaces/Todos';
 import { TodosService } from '@/services/';
 import { Toast } from '@/shared-components';
@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { Form, Switch } from 'react-aria-components';
 import { FaArrowLeft } from 'react-icons/fa';
-import schema from './Validation/schema';
+import validationSchema from './validation-schema';
 
 interface IFormTodoProps {
   todo?: ITodos;
@@ -32,11 +32,11 @@ export default function FormTodo({ todo }: IFormTodoProps) {
       completed: todo?.completed ?? false
     },
     validateOnMount: false,
-    validationSchema: schema,
-    onSubmit: handleSubmit
+    validationSchema,
+    onSubmit
   });
 
-  async function handleSubmit() {
+  async function onSubmit() {
     const { title, description, completed } = formik.values;
 
     if (todo) {

@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Form, Text } from 'react-aria-components';
-import schema from './Validation/schema';
+import validationSchema from './validation-schema';
 
 export default function Register() {
   const formik = useFormik({
@@ -16,11 +16,11 @@ export default function Register() {
       password: '',
       confirmPassword: ''
     },
-    validationSchema: schema,
-    onSubmit: handleSubmit
+    validationSchema,
+    onSubmit
   });
 
-  async function handleSubmit() {
+  async function onSubmit() {
     const { email, username, password } = formik.values;
     try {
       const response = await AuthService.register({

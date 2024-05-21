@@ -1,6 +1,6 @@
-import { useAuthContext } from '@/hooks/useAuthContext';
+import { useAuthContext } from '@/hooks/use-auth-context';
 import { TodosService } from '@/services/';
-import List from './components/List';
+import List from './components/list';
 
 export default async function TodoList() {
   const { user } = useAuthContext();

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Text } from 'react-aria-components';
 import { MdOutlineEdit } from 'react-icons/md';
-import DeleteTodo from '../../../DeleteTodo';
+import DeleteTodo from '../../../delete-todo';
 
 interface IListProps {
   data: ITodos[];
@@ -48,7 +48,7 @@ export default function List({ data }: IListProps) {
 
           <div className="flex gap-2">
             <button
-              onClick={() => router.push(`/dashboard/editTodo/${item._id}`)}
+              onClick={() => router.push(`/dashboard/edit-todo/${item._id}`)}
             >
               <MdOutlineEdit size={24} />
             </button>

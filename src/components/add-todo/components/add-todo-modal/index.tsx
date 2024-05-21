@@ -1,8 +1,8 @@
 import { Button, Modal } from '@/shared-components';
 import { useState } from 'react';
-import FormTodo from '../../../FormTodo';
+import FormTodo from '../../../form-todo';
 
-export default function AddModal() {
+export default function AddTodoModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

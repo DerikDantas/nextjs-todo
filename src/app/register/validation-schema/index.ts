@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const schema = Yup.object({
+const validationSchema = Yup.object({
   username: Yup.string().required('Username is a required field'),
   email: Yup.string().email().required('Email is a required field'),
   password: Yup.string().required('Password is a required field'),
@@ -9,4 +9,4 @@ const schema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords must match')
 });
 
-export default schema;
+export default validationSchema;
