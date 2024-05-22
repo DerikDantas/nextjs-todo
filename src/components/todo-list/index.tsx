@@ -1,11 +1,18 @@
+import Loading from '@/app/loading';
 import { useAuthContext } from '@/hooks/use-auth-context';
-import { TodosService } from '@/services/';
+import { useTodosQueries } from '@/queries/todos';
+import { Text } from 'react-aria-components';
 import List from './components/list';
 
 export default async function TodoList() {
   const { user } = useAuthContext();
 
-  const { todos } = await TodosService.getTodos(user?._id ?? '');
+  const { useGetTodos } = useTodosQueries();
+  const { data, isLoading, isError } = useGetTodos(user?._id ?? '');
 
-  return <List data={todos} />;
+  if (isLoading) return <Loading />;
+
+  if (isError) return <Text color="red">Error to fetch todos</Text>;
+
+  return <List data={data?.todos ?? []} />;
 }

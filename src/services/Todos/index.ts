@@ -2,7 +2,7 @@ import { ITodos } from '@/interfaces/Todos';
 import { todosRoute } from '../../constants/routes';
 
 export class TodosService {
-  static async getTodos(userId: string) {
+  static async getTodos(userId: string): Promise<{ todos: ITodos[] }> {
     return fetch(todosRoute + `?userId=${userId}`, {
       cache: 'no-store'
     })
@@ -16,7 +16,7 @@ export class TodosService {
       .catch((error) => console.log('Error loading todos: ', error));
   }
 
-  static async getById(id: string) {
+  static async getById(id: string): Promise<ITodos> {
     return fetch(todosRoute + `/${id}`, {
       cache: 'no-store'
     })
