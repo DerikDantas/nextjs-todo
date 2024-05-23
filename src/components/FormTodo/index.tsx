@@ -58,7 +58,8 @@ export default function FormTodo({ todo }: IFormTodoProps) {
             ]);
 
             Toast.success('Successfully updated!');
-            route.push('/dashboard');
+            route.refresh();
+            route.back();
           } else {
             Toast.error('Failed to updated a todo.');
           }
